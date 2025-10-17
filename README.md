@@ -54,8 +54,9 @@
          d="M 25.479241,133.64846 15.203229,101.52665 c -2.326718,-9.522104 0.851612,-8.583678 6.957411,-4.638272 10.263859,6.632232 46.814161,38.142872 5.153636,69.574102 -7.238897,5.46146 -15.635534,6.55193 -11.626945,-4.01617 z"
          id="path6" /></g></g></svg>
 
-OSIK – Okay Salmon Invers![OSIKicon](https://github.com/user-attachments/assets/12d85617-c1df-4616-b529-9d15c9138f9a)
-e Kinematics
+![OSIKicon](https://github.com/user-attachments/assets/12d85617-c1df-4616-b529-9d15c9138f9a)
+
+**OSIK – Okay Salmon Inverse Kinematics**
 
 OSIK (Okay Salmon Inverse Kinematics) is a custom Godot 4.5+ node designed to make inverse kinematics simple, lightweight, and fun to use.
 This tool is completely free to use, modify, and include in your own projects.
