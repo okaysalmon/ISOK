@@ -94,6 +94,6 @@ The software is provided “as-is” with no warranty and the author holds no re
 By downloading or using the Software, you agree to the terms outlined in the included End User License Agreement (EULA).
 
 OSIK = Okay Salmon Inverse Kinematics
-Enjoy, explore, and have fun animating!
+Enjoy, explore, and have fun!
 
 Made with love by Okay Salmon
