@@ -2,8 +2,8 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="192.54959mm"
-   height="168.02644mm"
+   width="19.254959mm"
+   height="16.802644mm"
    viewBox="0 0 192.54959 168.02644"
    version="1.1"
    id="svg1"
