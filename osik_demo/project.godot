@@ -1,0 +1,17 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="OSIK_Demo"
+config/description="A brief demonstration of OSIK in action. Made by Okay Salmon"
+config/version="1.0.0.0"
+config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="uid://bhvijn8gl5617"

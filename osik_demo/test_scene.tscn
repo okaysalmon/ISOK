@@ -1,0 +1,163 @@
+[gd_scene load_steps=20 format=3 uid="uid://d0cm6lf7ibpjj"]
+
+[ext_resource type="PackedScene" uid="uid://cf2g4gkv1higy" path="res://BlenderFiles/ImpScenes/apple_2.tscn" id="1_ia1lp"]
+[ext_resource type="PackedScene" uid="uid://pbnuefiy6cts" path="res://BlenderFiles/ImpScenes/worm_2.tscn" id="2_sasra"]
+[ext_resource type="Script" uid="uid://g3m32814700a" path="res://OSIK/OS_IK.gd" id="3_coq8p"]
+[ext_resource type="Script" uid="uid://dj2fma4aphiml" path="res://OSIK/constraints.gd" id="4_2nij2"]
+[ext_resource type="Texture2D" uid="uid://c0vrhp2elwh4l" path="res://Moving Backgroung.png" id="5_2nij2"]
+
+[sub_resource type="Resource" id="Resource_2nij2"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.007"
+
+[sub_resource type="Resource" id="Resource_7cbxl"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.006"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 45.0
+
+[sub_resource type="Resource" id="Resource_8pr8v"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.005"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 45.0
+
+[sub_resource type="Resource" id="Resource_buypi"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.004"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 5.0
+
+[sub_resource type="Resource" id="Resource_njel3"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.003"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 5.0
+
+[sub_resource type="Resource" id="Resource_vr1i5"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.002"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 45.0
+
+[sub_resource type="Resource" id="Resource_rpuu0"]
+script = ExtResource("4_2nij2")
+boneName = "Bone.001"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 45.0
+
+[sub_resource type="Resource" id="Resource_oo8pe"]
+script = ExtResource("4_2nij2")
+boneName = "Bone"
+xPositiveLimit = 45.0
+xNegativeLimit = 45.0
+yPositiveLimit = 45.0
+yNegativeLimit = 45.0
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_coq8p"]
+panorama = ExtResource("5_2nij2")
+energy_multiplier = 2.0
+
+[sub_resource type="Sky" id="Sky_2nij2"]
+sky_material = SubResource("PanoramaSkyMaterial_coq8p")
+
+[sub_resource type="Environment" id="Environment_7cbxl"]
+background_mode = 2
+sky = SubResource("Sky_2nij2")
+sky_custom_fov = 50.0
+
+[sub_resource type="Animation" id="Animation_4gito"]
+resource_name = "Move around"
+length = 500.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Apple2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4.4083333, 10.466666, 17.083334, 26.175, 31.958334, 38.291668, 44.633335, 55.65, 63.366665, 72.73333, 79.89167, 88.63333, 100.29999, 104.70832, 110.766655, 117.38332, 126.47499, 132.25832, 138.59166, 144.93332, 155.94998, 163.66666, 173.03333, 180.19165, 188.93332, 201.66666, 202.79999, 206.075, 207.20833, 212.13333, 213.26666, 218.75, 219.88333, 227.84166, 228.97499, 233.625, 234.75833, 239.95833, 241.09166, 246.3, 247.43333, 257.31665, 258.45, 265.03333, 266.16666, 274.4, 275.53333, 281.55835, 282.69165, 290.3, 291.43332, 301.96664, 306.375, 312.43332, 319.05, 328.14166, 333.925, 340.2583, 346.59998, 357.61664, 365.3333, 374.69998, 381.85834, 390.59998, 404.46667, 408.875, 414.93332, 421.55, 430.64166, 436.425, 442.75833, 449.1, 460.11667, 467.8333, 477.19998, 484.35834, 493.09998),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.24573863, 1.0645391, -0.7180326), Vector3(0.24573863, -0.61284804, -0.7180326), Vector3(1.3781387, 0.20876229, 0.1614837), Vector3(1.3781387, 1.283801, 0.1614837), Vector3(-3.183385, 1.283801, 0.1614837), Vector3(-0.79325104, 1.283801, -1.8163354), Vector3(-0.79325104, -1.0946156, -1.8163354), Vector3(-0.79325104, 0.68386996, 1.5991216), Vector3(-0.79325104, -1.4030002, 1.5991216), Vector3(0.50875306, 0.2867539, 0.116332054), Vector3(-0.87041736, 0.2867539, 1.0440834), Vector3(-0.87041736, -0.82356834, -0.84960353), Vector3(-0.87041736, 0.9410105, -0.84960353), Vector3(0.24573863, 1.0645391, -0.7180326), Vector3(0.24573863, -0.61284804, -0.7180326), Vector3(1.3781387, 0.20876229, 0.1614837), Vector3(1.3781387, 1.283801, 0.1614837), Vector3(-3.183385, 1.283801, 0.1614837), Vector3(-0.79325104, 1.283801, -1.8163354), Vector3(-0.79325104, -1.0946156, -1.8163354), Vector3(-0.79325104, 0.68386996, 1.5991216), Vector3(-0.79325104, -1.4030002, 1.5991216), Vector3(0.50875306, 0.2867539, 0.116332054), Vector3(-0.87041736, 0.2867539, 1.0440834), Vector3(-0.87041736, -0.82356834, -0.84960353), Vector3(-0.87041736, 0.9410105, -0.84960353), Vector3(0.24573863, 1.0645391, -0.7180326), Vector3(0.24573863, 1.0645391, -0.7180326), Vector3(0.24573863, -0.61284804, -0.7180326), Vector3(0.24573863, -0.61284804, -0.7180326), Vector3(1.3781387, 0.20876229, 0.1614837), Vector3(1.3781387, 0.20876229, 0.1614837), Vector3(1.3781387, 1.283801, 0.1614837), Vector3(1.3781387, 1.283801, 0.1614837), Vector3(-3.183385, 1.283801, 0.1614837), Vector3(-3.183385, 1.283801, 0.1614837), Vector3(-0.79325104, 1.283801, -1.8163354), Vector3(-0.79325104, 1.283801, -1.8163354), Vector3(-0.79325104, -1.0946156, -1.8163354), Vector3(-0.79325104, -1.0946156, -1.8163354), Vector3(-0.79325104, 0.68386996, 1.5991216), Vector3(-0.79325104, 0.68386996, 1.5991216), Vector3(-0.79325104, -1.4030002, 1.5991216), Vector3(-0.79325104, -1.4030002, 1.5991216), Vector3(0.50875306, 0.2867539, 0.116332054), Vector3(0.50875306, 0.2867539, 0.116332054), Vector3(-0.87041736, 0.2867539, 1.0440834), Vector3(-0.87041736, 0.2867539, 1.0440834), Vector3(-0.87041736, -0.82356834, -0.84960353), Vector3(-0.87041736, -0.82356834, -0.84960353), Vector3(-0.87041736, 0.9410105, -0.84960353), Vector3(-0.87041736, 0.9410105, -0.84960353), Vector3(0.24573863, 1.0645391, -0.7180326), Vector3(0.24573863, -0.61284804, -0.7180326), Vector3(1.3781387, 0.20876229, 0.1614837), Vector3(1.3781387, 1.283801, 0.1614837), Vector3(-3.183385, 1.283801, 0.1614837), Vector3(-0.79325104, 1.283801, -1.8163354), Vector3(-0.79325104, -1.0946156, -1.8163354), Vector3(-0.79325104, 0.68386996, 1.5991216), Vector3(-0.79325104, -1.4030002, 1.5991216), Vector3(0.50875306, 0.2867539, 0.116332054), Vector3(-0.87041736, 0.2867539, 1.0440834), Vector3(-0.87041736, -0.82356834, -0.84960353), Vector3(-0.87041736, 0.9410105, -0.84960353), Vector3(0.24573863, 1.0645391, -0.7180326), Vector3(0.24573863, -0.61284804, -0.7180326), Vector3(1.3781387, 0.20876229, 0.1614837), Vector3(1.3781387, 1.283801, 0.1614837), Vector3(-3.183385, 1.283801, 0.1614837), Vector3(-0.79325104, 1.283801, -1.8163354), Vector3(-0.79325104, -1.0946156, -1.8163354), Vector3(-0.79325104, 0.68386996, 1.5991216), Vector3(-0.79325104, -1.4030002, 1.5991216), Vector3(0.50875306, 0.2867539, 0.116332054), Vector3(-0.87041736, 0.2867539, 1.0440834), Vector3(-0.87041736, -0.82356834, -0.84960353), Vector3(-0.87041736, 0.9410105, -0.84960353)]
+}
+
+[sub_resource type="Animation" id="Animation_fbuy2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Apple2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.24573863, 1.0645391, -0.7180326)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0k8yu"]
+_data = {
+&"Move around": SubResource("Animation_4gito"),
+&"RESET": SubResource("Animation_fbuy2")
+}
+
+[node name="TestScene" type="Node3D"]
+
+[node name="Apple2" parent="." instance=ExtResource("1_ia1lp")]
+transform = Transform3D(-0.032387596, 0, 0.99947536, 0, 1, 0, -0.99947536, 0, -0.032387596, 0.24573863, 1.0645391, -0.7180326)
+
+[node name="Worm2" parent="." instance=ExtResource("2_sasra")]
+
+[node name="OSIK" type="SkeletonModifier3D" parent="Worm2/Armature/Skeleton3D" index="0" node_paths=PackedStringArray("targetNode")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+transform = Transform3D(-0.9664748, 0, -0.256762, 0, 1, 0, 0.256762, 0, -0.9664748, 0.0009486804, 0.0337528, -0.029276092)
+rotation_edit_mode = 0
+rotation_order = 2
+top_level = false
+visible = true
+visibility_parent = NodePath("")
+active = true
+influence = 1.0
+script = ExtResource("3_coq8p")
+tipBoneLenght = 0.3
+loops = 8
+CloseEnoughValue = 0.1
+targetNode = NodePath("../../../../Apple2")
+targetBone = "Bone.007"
+IKLength = 8
+slerpSpeed = 20.0
+Limits = Array[ExtResource("4_2nij2")]([SubResource("Resource_2nij2"), SubResource("Resource_7cbxl"), SubResource("Resource_8pr8v"), SubResource("Resource_buypi"), SubResource("Resource_njel3"), SubResource("Resource_vr1i5"), SubResource("Resource_rpuu0"), SubResource("Resource_oo8pe")])
+metadata/_custom_type_script = "uid://g3m32814700a"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7cbxl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_0k8yu")
+}
+
+[editable path="Worm2"]
