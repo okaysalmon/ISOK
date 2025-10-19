@@ -79,8 +79,8 @@ var WarrningTimmerslerpSpeed:float = 5.0
 @onready var global_scale:Vector3 = self.global_transform.basis.get_scale():
 	set(newVal):
 		global_scale = newVal
-		if global_scale != Vector3(1,1,1):
-			push_error("Scale isn’t set to Vector3(1, 1, 1). Scaling isn’t supported yet and might cause some funky stuff to happen.")
+		#if global_scale != Vector3(1,1,1): ## this error no longer needed as scaling fixed
+			#push_error("Scale isn’t set to Vector3(1, 1, 1). Scaling isn’t supported yet and might cause some funky stuff to happen.")
 
 
 func _ready():
@@ -281,7 +281,7 @@ func _process_modification_with_delta(delta: float) -> void:
 			boneCurrentPoseArray[boneList.size()-bone-1].basis = boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().slerp(local_pose.basis.orthonormalized(),slerpSpeed*1*delta).orthonormalized()
 			if bone != boneList.size()-1:
 				# Sets the new origin for the next bone based on the current bone’s basis Y direction.
-				boneCurrentPoseArray[boneList.size()-bone-2].origin = (boneCurrentPoseArray[boneList.size()-bone-1].origin+ (boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().y.normalized() *IK_Look_Spots[boneList.size()-bone-1][1]))
+				boneCurrentPoseArray[boneList.size()-bone-2].origin = (boneCurrentPoseArray[boneList.size()-bone-1].origin+ (boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().y.normalized() *(IK_Look_Spots[boneList.size()-bone-1][1]))/global_scale)
 			skeleton.set_bone_global_pose(bone_idx, boneCurrentPoseArray[boneList.size()-bone-1])
 
 
