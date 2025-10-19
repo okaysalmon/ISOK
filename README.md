@@ -77,10 +77,6 @@ If you make changes to the OSIK script, set the Active property to Off before ed
 
 🧠 Notes
 
-Scaling is not currently supported. Keep your scale at Vector3(1, 1, 1) to avoid unexpected results.
-
-Works best with clean, properly oriented skeleton hierarchies.
-
 This is a work-in-progress tool, so feel free to experiment, expand, and improve upon it.
 
 💬 Credits & License
