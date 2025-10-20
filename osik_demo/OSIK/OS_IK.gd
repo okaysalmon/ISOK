@@ -26,7 +26,7 @@ class_name OSIK
 @export_enum(" ") var targetBone:String:
 	set(NewVal):
 		targetBone = NewVal
-		if loaded:
+		if loaded and NewVal!=null and NewVal != "":
 			boneList = _creat_bone_list()
 			_creat_bone_constraints_resorces()
 			_creat_IK_Look_Spots(boneList)
@@ -37,7 +37,7 @@ class_name OSIK
 			IKLength = 1
 		else:
 			IKLength = NewVal
-		if loaded:
+		if loaded and targetBone != "" :
 			boneList = _creat_bone_list()
 			_creat_bone_constraints_resorces()
 			_creat_IK_Look_Spots(boneList)
@@ -205,7 +205,7 @@ func _validate_property(property: Dictionary) -> void:
 
 ## this one will run of using the positions
 func _process_modification_with_delta(delta: float) -> void:
-	if is_inside_tree() and targetNode !=null and is_instance_valid(targetNode) and targetBone!=null:
+	if is_inside_tree() and targetNode !=null and is_instance_valid(targetNode) and targetBone!=null and targetBone !="" :
 		var currentIteration:int = 0
 		var MaxIterations:int  = loops
 		var skeleton: Skeleton3D = get_skeleton()
@@ -347,5 +347,8 @@ func clamp_directional_angle(reference: Vector3, target: Vector3, OSLimits: OSIK
 	).normalized()
 
 	# Then transform back to world space, this is usually the point where you scoop your brain up off the floor after dealing with all that relative vector math.
+	var final_dir = newtransform.basis.orthonormalized() * clamped_local
+	return final_dir.normalized()
+
 	var final_dir = newtransform.basis.orthonormalized() * clamped_local
 	return final_dir.normalized()
