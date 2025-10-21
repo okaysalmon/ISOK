@@ -349,6 +349,3 @@ func clamp_directional_angle(reference: Vector3, target: Vector3, OSLimits: OSIK
 	# Then transform back to world space, this is usually the point where you scoop your brain up off the floor after dealing with all that relative vector math.
 	var final_dir = newtransform.basis.orthonormalized() * clamped_local
 	return final_dir.normalized()
-
-	var final_dir = newtransform.basis.orthonormalized() * clamped_local
-	return final_dir.normalized()
