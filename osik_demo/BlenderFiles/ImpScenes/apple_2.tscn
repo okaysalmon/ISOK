@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cf2g4gkv1higy"]
-
-[ext_resource type="PackedScene" uid="uid://cjmeujmk6uruq" path="res://BlenderFiles/Apple.blend" id="1_84qqy"]
-
-[node name="Apple2" instance=ExtResource("1_84qqy")]

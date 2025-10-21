@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://pbnuefiy6cts"]
-
-[ext_resource type="PackedScene" uid="uid://b21v4elnh01qj" path="res://BlenderFiles/Worm.blend" id="1_jnyo6"]
-
-[node name="Worm2" instance=ExtResource("1_jnyo6")]
