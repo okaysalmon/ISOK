@@ -64,6 +64,8 @@ class_name OSIK
 			Limits = NewVal
 			
 
+@onready var skeleton: Skeleton3D = get_skeleton()
+
 var LimitsSizeEdit:bool = false
 var boneList:Array
 var loaded = false
@@ -75,6 +77,14 @@ var tipPoint: Vector3
 
 var WarrningTimmer:float = 5.0
 var WarrningTimmerslerpSpeed:float = 5.0
+
+
+@onready var priorSibling : OSIK #= set_prior_sibling()
+var boneCache : Dictionary
+
+#These are here because I’m starting work on a fix for the shakes that happen in the editor. I think it’s due to the loss of pose between frames when a frame is skipped. It flicks back to the default pose, then grows back out from it. So if the pose from the previous frame is fed back to the first node, it should fix it... I think.
+#var start
+#var otherModifiers:Array[OSIK]
 
 @onready var global_scale:Vector3 = self.global_transform.basis.get_scale():
 	set(newVal):
@@ -89,6 +99,9 @@ func _ready():
 	target_PrevLocation = targetNode.global_position
 	_creat_IK_Look_Spots(boneList)
 	_creat_bone_current_pose_list()
+	var LatIndex:int = skeleton.find_bone(boneList[-1])
+	#start = (skeleton.global_transform * skeleton.get_bone_global_pose(LatIndex)).origin
+	#_connect_Modified_Pose_prior_OSIKs()
 
 func _process(delta: float) -> void:
 	if global_scale != self.global_transform.basis.get_scale():
@@ -106,7 +119,6 @@ func _process(delta: float) -> void:
 
 func _creat_IK_Look_Spots(aBoneList:Array):
 	IK_Look_Spots.resize(aBoneList.size())
-	var skeleton: Skeleton3D = get_skeleton()
 	for i in aBoneList.size():
 		IK_Look_Spots[i]= [[],[]]
 		var bone_idx: int = skeleton.find_bone(aBoneList[i])
@@ -114,7 +126,6 @@ func _creat_IK_Look_Spots(aBoneList:Array):
 		IK_Look_Spots[i][1] = get_bone_length(skeleton,bone_idx)
 
 func update_bone_sizes():
-	var skeleton: Skeleton3D = get_skeleton()
 	for i in IK_Look_Spots.size():
 		var bone_idx: int = skeleton.find_bone(boneList[i])
 		IK_Look_Spots[i][1] = get_bone_length(skeleton,bone_idx)
@@ -141,7 +152,6 @@ func get_bone_length(skeleton_node: Skeleton3D, bone_index: int) -> float:
 		return tipBoneLenght * global_scale.y
 
 func _creat_bone_current_pose_list():
-	var skeleton: Skeleton3D = get_skeleton()
 	var startingIndex:int = skeleton.find_bone(targetBone)
 	if !boneCurrentPoseArray.is_empty():
 		boneCurrentPoseArray.clear()
@@ -150,7 +160,6 @@ func _creat_bone_current_pose_list():
 		boneCurrentPoseArray[i] = skeleton.get_bone_global_pose(startingIndex-i)
 
 func _creat_bone_list():
-	var skeleton: Skeleton3D = get_skeleton()
 	var list:Array = []
 	var startingIndex:int = skeleton.find_bone(targetBone)
 	if IKLength > startingIndex+1:
@@ -198,7 +207,6 @@ func _creat_bone_constraints_resorces():
 ## this Validate_property creates the Enum list for the Skeleton
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "targetBone":
-		var skeleton: Skeleton3D = get_skeleton()
 		if skeleton:
 			property.hint = PROPERTY_HINT_ENUM
 			property.hint_string = skeleton.get_concatenated_bone_names()
@@ -208,58 +216,57 @@ func _process_modification_with_delta(delta: float) -> void:
 	if is_inside_tree() and targetNode !=null and is_instance_valid(targetNode) and targetBone!=null and targetBone !="" :
 		var currentIteration:int = 0
 		var MaxIterations:int  = loops
-		var skeleton: Skeleton3D = get_skeleton()
 		if !skeleton:
 			return # Never happen, but for the safety.
 		var LatIndex:int = skeleton.find_bone(boneList[-1])
-		if target_PrevLocation != targetNode.global_position or target_PrevLocation == null:
-			target_PrevLocation = targetNode.global_position
-			while currentIteration < MaxIterations:
-				#if IKLength ==1 and skeleton.find_bone(targetBone)==0:
-				#	break
-				var start = (skeleton.global_transform * skeleton.get_bone_global_pose(LatIndex)).origin
-				## BACKWARD
-				# I know most people would call this the forward pass, but since it reaches back from the target to the root bone, it made more sense to me to call it the backward pass.
-				var directToTargetFromLast =  (targetNode.global_position - IK_Look_Spots[0][0].origin).normalized()
-				IK_Look_Spots[0][0].origin = targetNode.global_position -(directToTargetFromLast*IK_Look_Spots[0][1])
-				for i in IK_Look_Spots.size():
-					if i != IK_Look_Spots.size()-1:
-						var IK_DirectionBackward = (IK_Look_Spots[i+1][0].origin - IK_Look_Spots[i][0].origin).normalized()
-						IK_Look_Spots[i+1][0].origin = IK_Look_Spots[i][0].origin + IK_DirectionBackward*IK_Look_Spots[i+1][1]
-				
-				## This is forward
-				# I know this would normally be called the backward pass since it’s the second stage, but because it reaches forward toward the target, it made more sense to me to call it the forward pass.
-				IK_Look_Spots[-1][0].origin = start
-				for i in IK_Look_Spots.size():
-					var inversI = IK_Look_Spots.size()-i # You could write it as (i + 1) * -1 and filter out cases where i * -1 >= IK_Look_Spots.size(), but the inverse approach works fine for me.
-					if inversI != IK_Look_Spots.size():
-						var IK_DirectionForward = (IK_Look_Spots[inversI][0].origin - IK_Look_Spots[inversI-1][0].origin).normalized()
-						var ParrentAngleForward:Vector3
-						if inversI != IK_Look_Spots.size()-1:
-							ParrentAngleForward = (IK_Look_Spots[inversI+1][0].origin - IK_Look_Spots[inversI][0].origin).normalized()
-						else:
-							var bone_idx: int = skeleton.find_bone(boneList[inversI])
-							ParrentAngleForward = (IK_Look_Spots[inversI][0].origin-(skeleton.global_transform * skeleton.get_bone_global_pose(bone_idx+1)).origin).normalized()
-							
-						IK_DirectionForward = clamp_directional_angle(ParrentAngleForward,IK_DirectionForward,Limits[inversI])
-						IK_Look_Spots[inversI-1][0].origin = IK_Look_Spots[inversI][0].origin - IK_DirectionForward*IK_Look_Spots[inversI-1][1]
+		
+		## Need to add in a check for ifOthersUpdated == true, have it set to true by sending a siginal to the others when updated. might caus an issue where they all keep turning on so maybe only have it siginal to all after this and non befor
+		#befor starting the iK system we need to make sure the root bone, or last bone in the chain gron the target bone is set to the position relative to its corect position
+		boneCurrentPoseArray[-1] = skeleton.get_bone_global_pose(LatIndex)
+		while currentIteration < MaxIterations:
+			var start = (skeleton.global_transform * skeleton.get_bone_global_pose(LatIndex)).origin
+			## BACKWARD
+			# I know most people would call this the forward pass, but since it reaches back from the target to the root bone, it made more sense to me to call it the backward pass.
+			var directToTargetFromLast =  (targetNode.global_position - IK_Look_Spots[0][0].origin).normalized()
+			IK_Look_Spots[0][0].origin = targetNode.global_position -(directToTargetFromLast*IK_Look_Spots[0][1])
+			for i in IK_Look_Spots.size():
+				if i != IK_Look_Spots.size()-1:
+					var IK_DirectionBackward = (IK_Look_Spots[i+1][0].origin - IK_Look_Spots[i][0].origin).normalized()
+					IK_Look_Spots[i+1][0].origin = IK_Look_Spots[i][0].origin + IK_DirectionBackward*IK_Look_Spots[i+1][1]
+			
+			## This is forward
+			# I know this would normally be called the backward pass since it’s the second stage, but because it reaches forward toward the target, it made more sense to me to call it the forward pass.
+			IK_Look_Spots[-1][0].origin = start
+			for i in IK_Look_Spots.size():
+				var inversI = IK_Look_Spots.size()-i # You could write it as (i + 1) * -1 and filter out cases where i * -1 >= IK_Look_Spots.size(), but the inverse approach works fine for me.
+				if inversI != IK_Look_Spots.size():
+					var IK_DirectionForward = (IK_Look_Spots[inversI][0].origin - IK_Look_Spots[inversI-1][0].origin).normalized()
+					var ParrentAngleForward:Vector3
+					if inversI != IK_Look_Spots.size()-1:
+						ParrentAngleForward = (IK_Look_Spots[inversI+1][0].origin - IK_Look_Spots[inversI][0].origin).normalized()
+					else:
+						var bone_idx: int = skeleton.find_bone(boneList[inversI])
+						ParrentAngleForward = (IK_Look_Spots[inversI][0].origin-(skeleton.global_transform * skeleton.get_bone_global_pose(bone_idx+1)).origin).normalized()
+						
+					IK_DirectionForward = clamp_directional_angle(ParrentAngleForward,IK_DirectionForward,Limits[inversI])
+					IK_Look_Spots[inversI-1][0].origin = IK_Look_Spots[inversI][0].origin - IK_DirectionForward*IK_Look_Spots[inversI-1][1]
 
-				# Creat 1 more point to tell if the tip of the last bone ould be with in the range at the end
-				var ParrentAngle:Vector3
-				var directToTarget =  (targetNode.global_position - IK_Look_Spots[0][0].origin).normalized()
-				if IKLength!=1:
-					# this clamps the tip if need
-					ParrentAngle =  IK_Look_Spots[0][0].origin - IK_Look_Spots[1][0].origin
-					directToTarget = clamp_directional_angle(ParrentAngle,directToTarget,Limits[0])
-				elif skeleton.find_bone(targetBone)!=0:
-					# this will clamp the angle on the tip if the IK is only 1 long and not the last bone
-					ParrentAngle = (IK_Look_Spots[0][0].origin-(skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone(targetBone)-1)).origin).normalized()
-					directToTarget = clamp_directional_angle(ParrentAngle,directToTarget,Limits[0])
-				var LastBoneTip =  IK_Look_Spots[0][0].origin+(directToTarget*IK_Look_Spots[0][1])
-				tipPoint = LastBoneTip
-				if targetNode.global_position.distance_to(LastBoneTip) < CloseEnoughValue: # this will have the IK stop once its closeenough to the target after the forward pass
-					break
-				currentIteration +=1
+			# Creat 1 more point to tell if the tip of the last bone ould be with in the range at the end
+			var ParrentAngle:Vector3
+			var directToTarget =  (targetNode.global_position - IK_Look_Spots[0][0].origin).normalized()
+			if IKLength!=1:
+				# this clamps the tip if need
+				ParrentAngle =  IK_Look_Spots[0][0].origin - IK_Look_Spots[1][0].origin
+				directToTarget = clamp_directional_angle(ParrentAngle,directToTarget,Limits[0])
+			elif skeleton.find_bone(targetBone)!=0:
+				# this will clamp the angle on the tip if the IK is only 1 long and not the last bone
+				ParrentAngle = (IK_Look_Spots[0][0].origin-(skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone(targetBone)-1)).origin).normalized()
+				directToTarget = clamp_directional_angle(ParrentAngle,directToTarget,Limits[0])
+			var LastBoneTip =  IK_Look_Spots[0][0].origin+(directToTarget*IK_Look_Spots[0][1])
+			tipPoint = LastBoneTip
+			if targetNode.global_position.distance_to(LastBoneTip) < CloseEnoughValue: # this will have the IK stop once its closeenough to the target after the forward pass
+				break
+			currentIteration +=1
 					
 		##The code below uses the position pointers created above to align each bone to the correct position along the IK chain.
 		## it also will slerp the basis towards the end goal
@@ -283,6 +290,9 @@ func _process_modification_with_delta(delta: float) -> void:
 				# Sets the new origin for the next bone based on the current bone’s basis Y direction.
 				boneCurrentPoseArray[boneList.size()-bone-2].origin = (boneCurrentPoseArray[boneList.size()-bone-1].origin+ (boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().y.normalized() *(IK_Look_Spots[boneList.size()-bone-1][1]))/global_scale)
 			skeleton.set_bone_global_pose(bone_idx, boneCurrentPoseArray[boneList.size()-bone-1])
+		## This next line isnt yet used, but will use it to bake poses from last OSIK back to the first in a future version
+		#bake_bone_pose()
+			
 
 
 
@@ -349,3 +359,20 @@ func clamp_directional_angle(reference: Vector3, target: Vector3, OSLimits: OSIK
 	# Then transform back to world space, this is usually the point where you scoop your brain up off the floor after dealing with all that relative vector math.
 	var final_dir = newtransform.basis.orthonormalized() * clamped_local
 	return final_dir.normalized()
+
+## This next line isnt yet used, but will use it to bake poses from last OSIK back to the first in a future version
+func bake_bone_pose():
+	for bone in skeleton.get_bone_count():
+		boneCache[bone] = skeleton.get_bone_global_pose(bone)
+
+
+# Going to change this to a full list that allso connects all to a siginal, moved, if one of the children are moved then all will rework there lists, the first and last will then connect to bakeing and remaking the poses to prevent flicker
+func set_prior_sibling()->OSIK:
+	var lastResult
+	for child in get_parent().get_children():
+		if child != self: 
+			lastResult = child
+		else:
+			return lastResult
+	return lastResult
+	
