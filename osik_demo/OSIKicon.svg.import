@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhvijn8gl5617"
-path="res://.godot/imported/OSIKicon.svg-02a4558503788b5f27f984b000e3e154.ctex"
+uid="uid://t5r440x4ts68"
+path="res://.godot/imported/OSIKicon.svg-01712b8ac908fea2807e096e951e7ac7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://OSIK/OSIKicon.svg"
-dest_files=["res://.godot/imported/OSIKicon.svg-02a4558503788b5f27f984b000e3e154.ctex"]
+source_file="res://OSIKicon.svg"
+dest_files=["res://.godot/imported/OSIKicon.svg-01712b8ac908fea2807e096e951e7ac7.ctex"]
 
 [params]
 

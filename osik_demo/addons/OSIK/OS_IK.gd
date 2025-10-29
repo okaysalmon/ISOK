@@ -1,5 +1,5 @@
 @tool
-@icon("res://OSIK/OSIKicon.svg")
+@icon("res://addons/OSIK/OSIKicon.svg")
 extends SkeletonModifier3D
 class_name OSIK
 
