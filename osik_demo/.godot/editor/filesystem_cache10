@@ -1,0 +1,22 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1761741257
+character_body_3d.gd::GDScript::8099302299162210751::1761741193::0::1::::<>CharacterBody3D<><>0<>0<><>::
+icon.svg::CompressedTexture2D::3203637449465332873::1761741193::1761741262::1::::<><><>0<>0<>2654002e0123c7bfa9b9d64b49c45699<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+Moving Backgroung.png::CompressedTexture2D::6571959910363917729::1761741193::1761741262::1::::<><><>0<>0<>076025132053b8eab947ef37cf876376<>res://.godot/imported/Moving Backgroung.png-e0f700db21b0f7c2c6794a3891aa5be3.s3tc.ctex::
+test_scene.tscn::PackedScene::8918896448008036543::1761741193::0::1::::<><><>0<>0<><>::uid://cf2g4gkv1higy::::res://BlenderFiles/ImpScenes/apple_2.tscn<>uid://pbnuefiy6cts::::res://BlenderFiles/ImpScenes/worm_2.tscn<>uid://g3m32814700a::::res://OSIK/OS_IK.gd<>uid://dj2fma4aphiml::::res://OSIK/constraints.gd<>uid://c0vrhp2elwh4l::::res://Moving Backgroung.png
+::res://BlenderFiles/::1761741193
+Apple.blend::PackedScene::5429592568770766028::1761741193::1761741290::1::::<><><>0<>0<>a8a0b8025d47e07d92178919f8a4c986<>res://.godot/imported/Apple.blend-0cb5d8ca0428bb32c524bfe2c579639a.scn::
+Worm.blend::PackedScene::4336520356084144553::1761741193::1761741291::1::::<><><>0<>0<>c429f4c95cb5edc1b3e303904e3c89bc<>res://.godot/imported/Worm.blend-942afdb7b0f63cb4c269f182f7eba37b.scn::uid://5r71wiq1ko3m::::res://BlenderFiles/textures/WormSkin Base Color.png<>uid://dt82x7eqjbx46::::res://BlenderFiles/textures/WormSkin Base ColorRough.png<>uid://clku2o0ilhgso::::res://BlenderFiles/textures/WormSkin Base ColorNormals.png
+::res://BlenderFiles/ImpScenes/::1761741193
+apple_2.tscn::PackedScene::5179940206493137020::1761741193::0::1::::<><><>0<>0<><>::uid://cjmeujmk6uruq::::res://BlenderFiles/Apple.blend
+worm_2.tscn::PackedScene::1055722287322807000::1761741193::0::1::::<><><>0<>0<><>::uid://b21v4elnh01qj::::res://BlenderFiles/Worm.blend
+::res://BlenderFiles/textures/::1761741193
+WormSkin Base Color.png::CompressedTexture2D::2142750274004302060::1761741193::1761741262::1::::<><><>0<>0<>20eaad4071dafa378b63ee3838834ace<>res://.godot/imported/WormSkin Base Color.png-80e91ffd1fc7aba76528c0321e28713d.s3tc.ctex::
+WormSkin Base ColorNormals.png::CompressedTexture2D::5566825755561395762::1761741193::1761741262::1::::<><><>0<>0<>b8766e398e50d3e42050dba101b1c814<>res://.godot/imported/WormSkin Base ColorNormals.png-ccfb7663bfa3b61cc7e5daac7f8964eb.s3tc.ctex::
+WormSkin Base ColorRough.png::CompressedTexture2D::8562656665815881197::1761741193::1761741262::1::::<><><>0<>0<>673475f9ba822d25ef70b77c345c065c<>res://.godot/imported/WormSkin Base ColorRough.png-e02c563f73923ed0c392cbdcb6d94a0f.s3tc.ctex::
+::res://OSIK/::1761741193
+constraints.gd::GDScript::7847024902491557547::1761741193::0::1::::OSIK_Constraints<>Resource<><>0<>1<><>::
+OSIK End User Agreement.txt::TextFile::-1::1761741193::0::1::::<><><>0<>0<><>::
+OSIKicon.svg::CompressedTexture2D::2921597064152484528::1761741193::1761741262::1::::<><><>0<>0<>d18a7201bf6638cb047c2cbbef13b19e<>res://.godot/imported/OSIKicon.svg-02a4558503788b5f27f984b000e3e154.ctex::
+OS_IK.gd::GDScript::479715715414764550::1761741193::0::1::::OSIK<>SkeletonModifier3D<>res://OSIK/OSIKicon.svg<>0<>1<><>::
+Read Me.txt::TextFile::-1::1761741193::0::1::::<><><>0<>0<><>::
