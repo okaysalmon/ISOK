@@ -14,4 +14,8 @@ config/name="OSIK_Demo"
 config/description="A brief demonstration of OSIK in action. Made by Okay Salmon"
 config/version="1.0.0.0"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="uid://bhvijn8gl5617"
+config/icon="uid://t5r440x4ts68"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/OSIK/plugin.cfg")
