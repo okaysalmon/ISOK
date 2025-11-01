@@ -1,11 +1,10 @@
 OSIK – Okay Salmon Inverse Kinematics
 
-OSIK (Okay Salmon Inverse Kinematics) is a custom Godot 4.5+ node designed to make inverse kinematics simple, lightweight, and fun to use.
-This tool is completely free to use, modify, and include in your own projects.
+OSIK (Okay Salmon Inverse Kinematics) is a custom Godot 4.5+ node designed to make inverse kinematics simple, lightweight, and fun to use. This tool is completely free to use, modify, and include in your own projects.
 
 🧩 Installation
 
-Copy the entire OSIK folder into your Godot 4.5 (or later) project.
+Copy the entire OSIK folder into your Godot 4.5 (or later) project. Edit: I’ve updated it to follow the standard addon setup. Place the OSIK folder in res://addons/OSIK. If you’re unsure, check the file locations in the demo.
 
 When adding a new node, you’ll see OSIK in the node list, select it just like any other node.
 
@@ -19,15 +18,11 @@ If you make changes to the OSIK script, set the Active property to Off before ed
 
 🧠 Notes
 
-Scaling is not currently supported. Keep your scale at Vector3(1, 1, 1) to avoid unexpected results.
-
-Works best with clean, properly oriented skeleton hierarchies.
-
 This is a work-in-progress tool, so feel free to experiment, expand, and improve upon it.
 
 💬 Credits & License
 
-No credit is required just don’t re-upload the entire repo or claim it as your own work.
+No credit is required, just don’t re-upload the entire repo or claim it as your own work.
 
 You’re welcome to modify, fork, or include OSIK in your own projects.
 
@@ -35,7 +30,6 @@ The software is provided “as-is” with no warranty and the author holds no re
 
 By downloading or using the Software, you agree to the terms outlined in the included End User License Agreement (EULA).
 
-OSIK = Okay Salmon Inverse Kinematics
-Enjoy, explore, and have fun!
+OSIK = Okay Salmon Inverse Kinematics Enjoy, explore, and have fun!
 
 Made with love by Okay Salmon
