@@ -235,7 +235,6 @@ func _process_modification_with_delta(delta: float) -> void:
 							# We run it in reverse so that it goes from the root bone to the tip, and we don’t affect the root bone since it needs to stay in place. [-1][0].origin is the position that we don’t want to change, or where i = 0.
 							var invertI:int = IK_Look_Spots.size()-1-i
 							IK_Look_Spots[invertI][0].origin = IK_Look_Spots[invertI+1][0].origin + (directToPole*IK_Look_Spots[invertI+1][1])
-							$"../MeshInstance3D".global_position = IK_Look_Spots[0][0].origin						
 				while currentIteration < MaxIterations:
 					var start = (skeleton.global_transform * skeleton.get_bone_global_pose(LatIndex)).origin
 					## BACKWARD
