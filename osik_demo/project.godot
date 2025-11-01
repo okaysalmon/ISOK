@@ -13,6 +13,7 @@ config_version=5
 config/name="OSIK_Demo"
 config/description="A brief demonstration of OSIK in action. Made by Okay Salmon"
 config/version="1.0.0.0"
+run/main_scene="uid://d0cm6lf7ibpjj"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://t5r440x4ts68"
 

@@ -1,1 +1,3 @@
 res://test_scene.tscn
+res://addons/OSIK/OS_IK.gd
+res://play_on_start.gd

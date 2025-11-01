@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://d0cm6lf7ibpjj"]
+[gd_scene load_steps=21 format=3 uid="uid://d0cm6lf7ibpjj"]
 
 [ext_resource type="PackedScene" uid="uid://cf2g4gkv1higy" path="res://BlenderFiles/ImpScenes/apple_2.tscn" id="1_ia1lp"]
 [ext_resource type="PackedScene" uid="uid://pbnuefiy6cts" path="res://BlenderFiles/ImpScenes/worm_2.tscn" id="2_sasra"]
 [ext_resource type="Script" uid="uid://g3m32814700a" path="res://addons/OSIK/OS_IK.gd" id="3_coq8p"]
 [ext_resource type="Script" uid="uid://dj2fma4aphiml" path="res://addons/OSIK/constraints.gd" id="4_2nij2"]
 [ext_resource type="Texture2D" uid="uid://c0vrhp2elwh4l" path="res://Moving Backgroung.png" id="5_2nij2"]
+[ext_resource type="Script" uid="uid://bbauuewk223fq" path="res://play_on_start.gd" id="6_7cbxl"]
 
 [sub_resource type="Resource" id="Resource_2nij2"]
 script = ExtResource("4_2nij2")
@@ -159,5 +160,9 @@ environment = SubResource("Environment_7cbxl")
 libraries = {
 &"": SubResource("AnimationLibrary_0k8yu")
 }
+script = ExtResource("6_7cbxl")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2.88021, 0.32137573, -0.011998653)
 
 [editable path="Worm2"]
