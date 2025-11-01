@@ -64,6 +64,7 @@ This tool is completely free to use, modify, and include in your own projects.
 🧩 Installation
 
 Copy the entire OSIK folder into your Godot 4.5 (or later) project.
+**Edit: I’ve updated it to follow the standard addon setup. Place the OSIK folder in res://addons/OSIK. If you’re unsure, check the file locations in the demo.**
 
 When adding a new node, you’ll see OSIK in the node list, select it just like any other node.
 
