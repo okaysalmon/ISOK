@@ -156,7 +156,7 @@ func _creat_bone_list():
 		return list
 
 func _creat_bone_constraints_resorces():
-	if targetNode !=null and is_instance_valid(targetNode):
+	if targetBone!=null and targetBone!="":
 		LimitsSizeEdit = true
 		if !Limits.is_empty() and Limits!= null and Limits[0]!=null and Limits[0].boneName == boneList[0]:
 			if Limits.size() == IKLength:
@@ -221,7 +221,7 @@ func _process_modification_with_delta(delta: float) -> void:
 				return # Never happen, but for the safety.
 			var LatIndex:int = skeleton.find_bone(boneList[-1])
 			
-			#befor starting the iK system we need to make sure the root bone, or last bone in the chain gron the target bone is set to the position relative to its corect position
+			#befor starting the iK system we need to make sure the root bone, or last bone in the chain fron the target bone is set to the position relative to its corect position
 			boneCurrentPoseArray[-1] = skeleton.get_bone_global_pose(LatIndex)
 			# This will make it so that the chain only updates if there are changes
 			if updateChainRequired:
@@ -431,7 +431,7 @@ func return_true_if_update_required()->bool:
 			set_all_OSIK_for_update_required()
 			return true
 	if skeleton.global_position != SkelPrevPos:
-		skeleton.global_position = SkelPrevPos
+		SkelPrevPos = skeleton.global_position
 		set_all_OSIK_for_update_required()
 		return true
 	return false
