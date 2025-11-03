@@ -120,7 +120,7 @@ _data = {
 [node name="TestScene" type="Node3D"]
 
 [node name="Apple2" parent="." instance=ExtResource("1_ia1lp")]
-transform = Transform3D(-0.032387596, 0, 0.99947536, 0, 1, 0, -0.99947536, 0, -0.032387596, 0.24573863, 1.0645391, -0.7180326)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24573863, 1.0645391, -0.7180326)
 
 [node name="Worm2" parent="." instance=ExtResource("2_sasra")]
 
