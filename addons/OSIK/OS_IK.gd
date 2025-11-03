@@ -23,6 +23,8 @@ class_name OSIK
 			CloseEnoughValue = NewValue
 @export var targetNode:Node3D
 @export var poleNode:Node3D
+@export var copyTargetRotation:bool = false
+@export var GlobalTargetRotation:bool = false
 @export_enum(" ") var targetBone:String:
 	set(NewVal):
 		targetBone = NewVal
@@ -304,7 +306,13 @@ func _process_modification_with_delta(delta: float) -> void:
 					# Sets the new origin for the next bone based on the current bone’s basis Y direction.
 					boneCurrentPoseArray[boneList.size()-bone-2].origin = (boneCurrentPoseArray[boneList.size()-bone-1].origin+ (boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().y.normalized() *(IK_Look_Spots[boneList.size()-bone-1][1]))/global_scale)
 				skeleton.set_bone_global_pose(bone_idx, boneCurrentPoseArray[boneList.size()-bone-1])
-			## This next line isnt yet used, but will use it to bake poses from last OSIK back to the first in a future version
+			## This next section will allow you to Keep rotation on the next bone after the chain relative to the roation of the IK if required, good for use with hands or feet
+				if copyTargetRotation and skeleton.find_bone(targetBone) != skeleton.get_bone_count()-1:
+					if GlobalTargetRotation:
+						skeleton.set_bone_global_pose(skeleton.find_bone(targetBone)+1,Transform3D(targetNode.global_basis,skeleton.get_bone_global_pose(skeleton.find_bone(targetBone)+1).origin))
+					else:
+						skeleton.set_bone_global_pose(skeleton.find_bone(targetBone)+1,Transform3D(targetNode.basis,skeleton.get_bone_global_pose(skeleton.find_bone(targetBone)+1).origin))
+			## Bake poses from last OSIK, use this for OSIK's to load there pose's from to stop jitters
 			if !allOSIK.is_empty():
 				if allOSIK[-1] == self:
 					bake_bone_pose()
