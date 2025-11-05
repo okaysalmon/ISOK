@@ -3,6 +3,8 @@
 extends SkeletonModifier3D
 class_name OSIK
 
+##Code Version 1.0.5.5 ##
+
 @export var tipBoneLenght:float = 0.1:
 	set(newVal):
 		if newVal <0.0001:
