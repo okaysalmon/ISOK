@@ -3,6 +3,8 @@
 extends SkeletonModifier3D
 class_name OSIK
 
+##Code Version 1.0.5.5 ##
+
 @export var tipBoneLenght:float = 0.1:
 	set(newVal):
 		if newVal <0.0001:
@@ -264,7 +266,7 @@ func _process_modification_with_delta(delta: float) -> void:
 								ParrentAngleForward = (IK_Look_Spots[inversI][0].origin-(skeleton.global_transform * skeleton.get_bone_global_pose(bone_idx+1)).origin).normalized()
 								
 							IK_DirectionForward = clamp_directional_angle(ParrentAngleForward,IK_DirectionForward,Limits[inversI])
-							IK_Look_Spots[inversI-1][0].origin = IK_Look_Spots[inversI][0].origin - IK_DirectionForward*IK_Look_Spots[inversI-1][1]
+							IK_Look_Spots[inversI-1][0].origin = IK_Look_Spots[inversI][0].origin - IK_DirectionForward*IK_Look_Spots[inversI][1]
 
 					# Creat 1 more point to tell if the tip of the last bone ould be with in the range at the end
 					var ParrentAngle:Vector3
