@@ -3,7 +3,7 @@
 extends SkeletonModifier3D
 class_name OSIK
 
-##Code Version 1.0.5.5 ##
+##Code Version 1.0.5.7 ##
 
 @export var tipBoneLenght:float = 0.1:
 	set(newVal):
@@ -27,6 +27,7 @@ class_name OSIK
 @export var poleNode:Node3D
 @export var copyTargetRotation:bool = false
 @export var GlobalTargetRotation:bool = false
+@export var LockToRestRoll:bool = false
 @export_enum(" ") var targetBone:String:
 	set(NewVal):
 		targetBone = NewVal
@@ -263,7 +264,7 @@ func _process_modification_with_delta(delta: float) -> void:
 								ParrentAngleForward = (IK_Look_Spots[inversI+1][0].origin - IK_Look_Spots[inversI][0].origin).normalized()
 							else:
 								var bone_idx: int = skeleton.find_bone(boneList[inversI])
-								ParrentAngleForward = (IK_Look_Spots[inversI][0].origin-(skeleton.global_transform * skeleton.get_bone_global_pose(bone_idx+1)).origin).normalized()
+								ParrentAngleForward = ((skeleton.global_transform * skeleton.get_bone_global_pose(bone_idx-1)).origin -IK_Look_Spots[inversI][0].origin).normalized()
 								
 							IK_DirectionForward = clamp_directional_angle(ParrentAngleForward,IK_DirectionForward,Limits[inversI])
 							IK_Look_Spots[inversI-1][0].origin = IK_Look_Spots[inversI][0].origin - IK_DirectionForward*IK_Look_Spots[inversI][1]
@@ -295,11 +296,20 @@ func _process_modification_with_delta(delta: float) -> void:
 				var looked_at: Transform3D 
 				if bone == boneList.size()-1:
 					if tipPoint != Vector3(0,0,0):
-						looked_at = _y_look_at(pose.orthonormalized(), tipPoint)
+						if LockToRestRoll:
+							looked_at  = _y_look_at_rel_to_globalTransform(pose.orthonormalized(), tipPoint, skeleton.global_transform *skeleton.get_bone_global_rest(bone_idx))
+						else:
+							looked_at = _y_look_at(pose.orthonormalized(), tipPoint)
 					else:
-						looked_at = _y_look_at(pose.orthonormalized(), targetNode.global_position)
+						if LockToRestRoll:
+							looked_at  = _y_look_at_rel_to_globalTransform(pose.orthonormalized(), targetNode.global_position, skeleton.global_transform *skeleton.get_bone_global_rest(bone_idx))
+						else:
+							looked_at = _y_look_at(pose.orthonormalized(), targetNode.global_position)
 				else:
-					looked_at = _y_look_at(pose.orthonormalized(),IK_Look_Spots[boneList.size()-bone-2][0].origin)
+					if LockToRestRoll:
+						looked_at  = _y_look_at_rel_to_globalTransform(pose.orthonormalized(), IK_Look_Spots[boneList.size()-bone-2][0].origin, skeleton.global_transform *skeleton.get_bone_global_rest(bone_idx))
+					else:
+						looked_at = _y_look_at(pose.orthonormalized(),IK_Look_Spots[boneList.size()-bone-2][0].origin)
 				# The code below converts the look-at location from global to local space so it can be correctly applied to the skeleton.
 				var new_global_pose = Transform3D(looked_at.basis.orthonormalized(), looked_at.origin)
 				var local_pose = skeleton.global_transform.affine_inverse().orthonormalized() * new_global_pose
@@ -323,11 +333,34 @@ func _process_modification_with_delta(delta: float) -> void:
 func _y_look_at(from: Transform3D, target: Vector3) -> Transform3D:
 	var t_v: Vector3 = target - from.origin
 	var v_y: Vector3 = t_v.normalized()
+	
+	##Creating a fixed Roll direction can be done with the below
+	#var global_down = Vector3.RIGHT
+	#var v_z: Vector3 = global_down.cross(v_y).normalized()
+	## This will keep making relative rolls, which can over twist 
 	var v_z: Vector3 = from.basis.orthonormalized().x.cross(v_y)
 	v_z = v_z.normalized()
+	
 	var v_x: Vector3 = v_y.cross(v_z)
+	
 	from.basis = Basis(v_x, v_y, v_z)
+	
 	return from
+
+
+func _y_look_at_rel_to_globalTransform(from: Transform3D, target: Vector3, globalTransform:Transform3D) -> Transform3D:
+	var t_v: Vector3 = target - from.origin
+	var v_y: Vector3 = t_v.normalized()
+	
+	##Creating a fixed Roll relative to the rest pose's roll
+	var rest_z = globalTransform.basis.x.normalized()
+	var v_z: Vector3 = rest_z.cross(v_y).normalized()
+	var v_x: Vector3 = v_y.cross(v_z).normalized()
+	
+	from.basis = Basis(v_x, v_y, v_z)
+	
+	return from
+
 
 func clamp_directional_angle(reference: Vector3, target: Vector3, OSLimits: OSIK_Constraints) -> Vector3:
 	var LimitX = OSLimits.limitX
