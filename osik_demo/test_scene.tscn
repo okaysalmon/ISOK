@@ -126,6 +126,7 @@ script = ExtResource("3_coq8p")
 tipBoneLenght = 0.3
 loops = 8
 CloseEnoughValue = 0.1
+DontTryIfCloseEnough = null
 targetNode = NodePath("../../../../Apple2")
 poleNode = NodePath("Marker3DPole")
 LockToRestRoll = true
