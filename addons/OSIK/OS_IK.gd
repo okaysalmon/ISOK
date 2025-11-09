@@ -3,31 +3,42 @@
 extends SkeletonModifier3D
 class_name OSIK
 
-##Code Version 1.0.5.7 ##
+##Code Version 1.0.5.8##
 
+##[b][u]Will only make a diffrence if[/u][/b] the IK Target bone is the last in the [Skeleton3D]
 @export var tipBoneLenght:float = 0.1:
 	set(newVal):
 		if newVal <0.0001:
 			newVal = 0.0001
 		tipBoneLenght = newVal
 		_creat_IK_Look_Spots(boneList)
+##Sets the number of times the solver will calculate back and forth to work out a solution.[br][br]Higher values can create more accurate bending for longer bone chains.[br]Keeping this between 1 and 4 works fine for shorter chains of 2–4 bones.
 @export var loops:int = 1:
 	set(newVal):
 		if newVal <1:
 			loops=1
 		else :
 			loops = newVal
+##Sets the distance from the target node at which the IK solver will stop looping once it’s within this range.[br][br] Note that the IK solver still aims for the center of the target, [b]not[/b] just the threshold distance
 @export var CloseEnoughValue:float = 0.01:
 	set(NewValue):
 		if NewValue < 0.01:
 			CloseEnoughValue = 0.01
 		else:
 			CloseEnoughValue = NewValue
+##if [color=ff1e00][b]true[/b][/color] and the solver tip is within the Close Enough value, it won’t readjust until it moves outside that range again.
+@export var DontTryIfCloseEnough:bool = false
+##The IK solver will aim for the [color=#00efef]global_position[/color] value of this node.
 @export var targetNode:Node3D
+##If a Pole Node is selected, the IK chain will first be built in that direction, forcing it to bend toward the pole’s position.
 @export var poleNode:Node3D
+##Makes the bone following the target bone adopt the same rotation as the target node.
 @export var copyTargetRotation:bool = false
+## Makes the bone after the target bone copy the global rotation of the target node, not just its local rotation. Requires [color=#00efef]Copy Target Location[/color] to also be [color=ff1e00][b]true[/b][/color].
 @export var GlobalTargetRotation:bool = false
+##Forces the roll in the IK solution to match the roll of the bones at rest. This can help prevent over-twisting in some IK setups.
 @export var LockToRestRoll:bool = false
+##The target bone that the IK will work back from. The tip of this bone will aim for the target node’s [color=#00efef]global_position[/color]
 @export_enum(" ") var targetBone:String:
 	set(NewVal):
 		targetBone = NewVal
@@ -36,6 +47,7 @@ class_name OSIK
 			_creat_bone_constraints_resorces()
 			_creat_IK_Look_Spots(boneList)
 			_creat_bone_current_pose_list()
+##How many bones back from the target bone the IK solver will affect.
 @export var IKLength :int = 1:
 	set (NewVal):
 		if NewVal <=0:
@@ -47,6 +59,9 @@ class_name OSIK
 			_creat_bone_constraints_resorces()
 			_creat_IK_Look_Spots(boneList)
 			_creat_bone_current_pose_list()
+##Will slerp from one solution to the next. This is meant to create smoother motion instead of flicking when hitting limits. Turn off if you want the bones to follow the solutions more quickly.
+@export var useSlerp:bool = true
+##Controls how quickly the bones move toward the target. Lower values are slower, higher values are faster. Very large values can cause shaking.
 @export_range(0.01,99.0,0.01) var slerpSpeed:float = 5:
 	set(newVal):
 		if newVal < 0.01:
@@ -56,6 +71,15 @@ class_name OSIK
 		if slerpSpeed > 45 and WarrningTimmerslerpSpeed > 4:
 			WarrningTimmerslerpSpeed =0
 			push_warning("DANGER ZONE! slerp Speed set to " + str(slerpSpeed) + " High speeds can cause errors and odd behavior")
+##This array is auto-generated when you adjust the IK length. However, you’ll need to manually set constraints here if you wish to use them.
+##[br][br]
+##Open the array and select the element with the bone name you want to restrict movement on. The restrictions are relative to the end position of the previous bone.
+##[br][br]
+##For example:
+##[br][br]
+##If a bone is locked at 0° positive and negative on both X and Y, it will follow the same direction as the previous bone.
+##[br][br]
+##If it’s set to ±90°, it can only bend 90 degrees relative to the last bone.
 @export var Limits:Array[OSIK_Constraints]:
 	set(NewVal):
 		if NewVal.size() != Limits.size() and !LimitsSizeEdit and loaded:
@@ -217,7 +241,12 @@ func _process_modification_with_delta(delta: float) -> void:
 		restore_pose_self()
 		if !updateChainRequired:
 			updateChainRequired = return_true_if_update_required()
-		if is_inside_tree() and targetNode !=null and is_instance_valid(targetNode) and targetBone!=null and targetBone !="" :
+		var shouldTry:bool = true
+		if DontTryIfCloseEnough:
+			if IK_Look_Spots[0][1] + targetNode.global_position.distance_to(IK_Look_Spots[0][0].origin) < CloseEnoughValue:
+				print(IK_Look_Spots[0][1] + targetNode.global_position.distance_to(IK_Look_Spots[0][0].origin))
+				shouldTry = false
+		if is_inside_tree() and targetNode !=null and is_instance_valid(targetNode) and targetBone!=null and targetBone !="" and shouldTry:
 			var currentIteration:int = 0
 			var MaxIterations:int  = loops
 			if !skeleton:
@@ -313,7 +342,11 @@ func _process_modification_with_delta(delta: float) -> void:
 				# The code below converts the look-at location from global to local space so it can be correctly applied to the skeleton.
 				var new_global_pose = Transform3D(looked_at.basis.orthonormalized(), looked_at.origin)
 				var local_pose = skeleton.global_transform.affine_inverse().orthonormalized() * new_global_pose
-				boneCurrentPoseArray[boneList.size()-bone-1].basis = boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().slerp(local_pose.basis.orthonormalized(),slerpSpeed*1*delta).orthonormalized()
+				
+				if useSlerp:
+					boneCurrentPoseArray[boneList.size()-bone-1].basis = boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().slerp(local_pose.basis.orthonormalized(),slerpSpeed*1*delta).orthonormalized()
+				else:
+					boneCurrentPoseArray[boneList.size()-bone-1].basis = local_pose.basis.orthonormalized()
 				if bone != boneList.size()-1:
 					# Sets the new origin for the next bone based on the current bone’s basis Y direction.
 					boneCurrentPoseArray[boneList.size()-bone-2].origin = (boneCurrentPoseArray[boneList.size()-bone-1].origin+ (boneCurrentPoseArray[boneList.size()-bone-1].basis.orthonormalized().y.normalized() *(IK_Look_Spots[boneList.size()-bone-1][1]))/global_scale)
@@ -325,9 +358,10 @@ func _process_modification_with_delta(delta: float) -> void:
 					else:
 						skeleton.set_bone_global_pose(skeleton.find_bone(targetBone)+1,Transform3D(targetNode.basis,skeleton.get_bone_global_pose(skeleton.find_bone(targetBone)+1).origin))
 			## Bake poses from last OSIK, use this for OSIK's to load there pose's from to stop jitters
-			if !allOSIK.is_empty():
-				if allOSIK[-1] == self:
-					bake_bone_pose()
+			bake_bone_pose()
+			#if !allOSIK.is_empty():
+			#	if allOSIK[-1] == self:
+					
 
 ## This Funciton is from the Documentation on how to use SkeletonModifier3D, and was what made me go, HAY! i can use this to make an IK system
 func _y_look_at(from: Transform3D, target: Vector3) -> Transform3D:
@@ -420,7 +454,7 @@ func bake_bone_pose():
 
 ## Prevents the node form shaking in editor and creates smother IK movment 
 func restore_pose_self():
-	var cache = allOSIK[-1].boneCache as Dictionary
+	var cache = boneCache as Dictionary
 	if not cache.is_empty():
 		for bone in skeleton.get_bone_count():
 			if boneList.has(skeleton.get_bone_name(bone)):
