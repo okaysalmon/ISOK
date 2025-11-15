@@ -3,7 +3,7 @@
 extends SkeletonModifier3D
 class_name OSIK
 
-##Code Version 1.0.5.8##
+##Code Version 1.0.5.9##
 
 ##[b][u]Will only make a diffrence if[/u][/b] the IK Target bone is the last in the [Skeleton3D]
 @export var tipBoneLenght:float = 0.1:
@@ -142,7 +142,7 @@ func update_bone_sizes():
 		for i in IK_Look_Spots.size():
 			var bone_idx: int = skeleton.find_bone(boneList[i])
 			IK_Look_Spots[i][1] = get_bone_length(skeleton,bone_idx)
-		_creat_bone_current_pose_list()
+		#_creat_bone_current_pose_list()
 
 func get_bone_length(skeleton_node: Skeleton3D, bone_index: int) -> float:
 	# Get the global pose of the current bone
