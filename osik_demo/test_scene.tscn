@@ -103,8 +103,15 @@ _data = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25514913, -0.018079162, 2.8252387)
 
 [node name="Worm2" parent="." instance=ExtResource("2_sasra")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 
-[node name="OSIK" type="SkeletonModifier3D" parent="Worm2/Armature/Skeleton3D" index="0" node_paths=PackedStringArray("targetNode", "poleNode")]
+[node name="Skeleton3D" parent="Worm2/Armature" index="0"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="Marker3DPole" type="Marker3D" parent="Worm2/Armature/Skeleton3D" index="0"]
+transform = Transform3D(0.9991519, 0, -0.041177824, 0, 1, 0, 0.041177824, 0, 0.9991519, 0.36841768, 0.9466019, -1.2135957)
+
+[node name="OSIK" type="SkeletonModifier3D" parent="Worm2/Armature/Skeleton3D" index="1" node_paths=PackedStringArray("targetNode", "poleNode")]
 _import_path = NodePath("")
 unique_name_in_owner = false
 process_mode = 0
@@ -114,7 +121,7 @@ process_thread_group = 0
 physics_interpolation_mode = 0
 auto_translate_mode = 0
 editor_description = ""
-transform = Transform3D(-0.9664748, 0, -0.256762, 0, 1, 0, 0.256762, 0, -0.9664748, 0.0009486804, 0.0337528, -0.029276092)
+transform = Transform3D(0.63369113, 0, 0.7735863, 0, 1, 0, -0.7735863, 0, 0.63369113, -0.53368115, 0.0337528, -0.30099052)
 rotation_edit_mode = 0
 rotation_order = 2
 top_level = false
@@ -126,17 +133,13 @@ script = ExtResource("3_coq8p")
 tipBoneLenght = 0.3
 loops = 8
 CloseEnoughValue = 0.1
-DontTryIfCloseEnough = null
 targetNode = NodePath("../../../../Apple2")
-poleNode = NodePath("Marker3DPole")
+poleNode = NodePath("../Marker3DPole")
 LockToRestRoll = true
 targetBone = "Bone.007"
 IKLength = 4
 Limits = Array[ExtResource("4_2nij2")]([SubResource("Resource_2nij2"), SubResource("Resource_7cbxl"), SubResource("Resource_8pr8v"), SubResource("Resource_buypi")])
 metadata/_custom_type_script = "uid://g3m32814700a"
-
-[node name="Marker3DPole" type="Marker3D" parent="Worm2/Armature/Skeleton3D/OSIK"]
-transform = Transform3D(1, 0, -1.4901161e-08, 0, 1, 0, 1.4901161e-08, 0, 1, 0.31838965, 0.9128491, -1.1984466)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_7cbxl")

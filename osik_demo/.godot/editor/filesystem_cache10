@@ -1,19 +1,19 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1762680324
+::res://::1763116511
 character_body_3d.gd::GDScript::8099302299162210751::1761741193::0::1::::<>CharacterBody3D<><>0<>0<><>::
 icon.svg::CompressedTexture2D::3203637449465332873::1761741193::1761741262::1::::<><><>0<>0<>2654002e0123c7bfa9b9d64b49c45699<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 Moving Backgroung.png::CompressedTexture2D::6571959910363917729::1761741193::1761741262::1::::<><><>0<>0<>076025132053b8eab947ef37cf876376<>res://.godot/imported/Moving Backgroung.png-e0f700db21b0f7c2c6794a3891aa5be3.s3tc.ctex::
 OSIKicon.svg::CompressedTexture2D::1396604901526482191::1761741193::1761742461::1::::<><><>0<>0<>7daf3979434d7e90a58b62777522de48<>res://.godot/imported/OSIKicon.svg-01712b8ac908fea2807e096e951e7ac7.ctex::
 play_on_start.gd::GDScript::2457859827635187442::1761982888::0::1::::<>AnimationPlayer<><>0<>0<><>::
-test_scene.tscn::PackedScene::8918896448008036543::1762433788::0::1::::<><><>0<>0<><>::uid://cf2g4gkv1higy::::res://BlenderFiles/ImpScenes/apple_2.tscn<>uid://pbnuefiy6cts::::res://BlenderFiles/ImpScenes/worm_2.tscn<>uid://g3m32814700a::::res://addons/OSIK/OS_IK.gd<>uid://dj2fma4aphiml::::res://addons/OSIK/constraints.gd<>uid://c0vrhp2elwh4l::::res://Moving Backgroung.png<>uid://bbauuewk223fq::::res://play_on_start.gd
+test_scene.tscn::PackedScene::8918896448008036543::1762681094::0::1::::<><><>0<>0<><>::uid://cf2g4gkv1higy::::res://BlenderFiles/ImpScenes/apple_2.tscn<>uid://pbnuefiy6cts::::res://BlenderFiles/ImpScenes/worm_2.tscn<>uid://g3m32814700a::::res://addons/OSIK/OS_IK.gd<>uid://dj2fma4aphiml::::res://addons/OSIK/constraints.gd<>uid://c0vrhp2elwh4l::::res://Moving Backgroung.png<>uid://bbauuewk223fq::::res://play_on_start.gd
 ::res://addons/::1761742239
-::res://addons/OSIK/::1762433767
+::res://addons/OSIK/::1762681056
 constraints.gd::GDScript::7847024902491557547::1761741193::0::1::::OSIK_Constraints<>Resource<><>0<>1<><>::
 OSIK End User Agreement.txt::TextFile::-1::1761741193::0::1::::<><><>0<>0<><>::
 OSIKicon.svg::CompressedTexture2D::2921597064152484528::1761741193::1761742354::1::::<><><>0<>0<>2839eee1dc737c3b81ceaae6d24108f4<>res://.godot/imported/OSIKicon.svg-c9ad27de94f8cfa057092c1b310afc38.ctex::
 OSIKplugIn.gd::GDScript::5550764117481974787::1761012006::0::1::::<>EditorPlugin<><>0<>1<><>::
-OS_IK.gd::GDScript::479715715414764550::1762433759::0::1::::OSIK<>SkeletonModifier3D<>res://addons/OSIK/OSIKicon.svg<>0<>1<><>::
-plugin.cfg::TextFile::-1::1762433767::0::1::::<><><>0<>0<><>::
+OS_IK.gd::GDScript::479715715414764550::1762680877::0::1::::OSIK<>SkeletonModifier3D<>res://addons/OSIK/OSIKicon.svg<>0<>1<><>::
+plugin.cfg::TextFile::-1::1762681056::0::1::::<><><>0<>0<><>::
 Read Me.txt::TextFile::-1::1761984549::0::1::::<><><>0<>0<><>::
 ::res://BlenderFiles/::1761741291
 Apple.blend::PackedScene::5429592568770766028::1761741193::1761741290::1::::<><><>0<>0<>a8a0b8025d47e07d92178919f8a4c986<>res://.godot/imported/Apple.blend-0cb5d8ca0428bb32c524bfe2c579639a.scn::
