@@ -127,7 +127,6 @@ loops = 8
 CloseEnoughValue = 0.1
 targetNode = NodePath("../../../../Apple2")
 poleNode = NodePath("../Marker3DPole")
-LockToRestRoll = true
 targetBone = "Bone.007"
 IKLength = 4
 Limits = Array[ExtResource("4_2nij2")]([SubResource("Resource_2nij2"), SubResource("Resource_7cbxl"), SubResource("Resource_8pr8v"), SubResource("Resource_buypi")])

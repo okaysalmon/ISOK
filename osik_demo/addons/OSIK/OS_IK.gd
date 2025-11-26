@@ -3,7 +3,7 @@
 extends SkeletonModifier3D
 class_name OSIK
 
-##Code Version 1.0.6.0##
+##Code Version 1.0.7.0##
 
 enum AXIS {X,Y,Z}
 
@@ -352,9 +352,9 @@ func _process_modification_with_delta(delta: float) -> void:
 				else:
 					boneCurrentPoseArray[boneList.size()-bone-1].basis = local_pose.basis.orthonormalized()
 				#Htis is where the roll lock will be applied once i have the code corected to fix y flip corection
-				#if bone_idx!=0:
+				if bone_idx!=0:
 					#print(str(skeleton.get_bone_pose(bone_idx-1).basis) +" the index is " +str(boneCurrentPoseArray[boneList.size()-bone-1].basis))
-				#	boneCurrentPoseArray[boneList.size()-bone-1].basis = clamp_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,Limits[bone-1].maxRollDeg)
+					boneCurrentPoseArray[boneList.size()-bone-1].basis =  limit_relative_y_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,Limits[bone-1].maxRollDeg)     #     clamp_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,Limits[bone-1].maxRollDeg)
 				
 				if bone != boneList.size()-1 :
 					# Sets the new origin for the next bone based on the current bone’s basis Y direction.
@@ -396,17 +396,18 @@ func _y_look_at_rel_to_globalTransform(from: Transform3D, target: Vector3, globa
 	var v_y: Vector3 = t_v.normalized()
 	
 	# making the out come for an ajusted that sutable for x alignment
-	var Test_Rest_Y= globalTransform.basis.y.normalized()
-	var rot_to_Aling = Test_Rest_Y.signed_angle_to(v_y,globalTransform.basis.z.normalized())
-	var X_adjust_globalTransform = globalTransform.basis.rotated(globalTransform.basis.z.normalized(),rot_to_Aling)
+	#var Test_Rest_Y= globalTransform.basis.y.normalized()
+	#var rot_to_Aling = Test_Rest_Y.signed_angle_to(v_y,globalTransform.basis.z.normalized())
+	#var X_adjust_globalTransform = globalTransform.basis.rotated(globalTransform.basis.z.normalized(),rot_to_Aling)
 	
 	# making the out come for an ajusted that sutable for z alignment
-	var ZTest_Rest_Y= globalTransform.basis.y.normalized()
-	var Zrot_to_Aling = Test_Rest_Y.signed_angle_to(v_y,globalTransform.basis.x.normalized())
-	var Z_adjust_globalTransform = globalTransform.basis.rotated(globalTransform.basis.x.normalized(),rot_to_Aling)
+	#var ZTest_Rest_Y= globalTransform.basis.y.normalized()
+	#var Zrot_to_Aling = Test_Rest_Y.signed_angle_to(v_y,globalTransform.basis.x.normalized())
+	#var Z_adjust_globalTransform = globalTransform.basis.rotated(globalTransform.basis.x.normalized(),rot_to_Aling)
 	
 	#blend Based off if its closer to z or x
-	globalTransform = X_adjust_globalTransform.slerp(Z_adjust_globalTransform,abs(v_y.z))
+	#globalTransform = X_adjust_globalTransform.slerp(Z_adjust_globalTransform,abs((globalTransform.inverse()* v_y).z*(1-(globalTransform.inverse()* v_y).x)))
+	#$"../../../Label3D".text = str(abs(v_y.z))
 	
 	##Creating a fixed Roll relative to the rest pose's roll
 	var rest_z = globalTransform.basis.x.normalized()
@@ -556,25 +557,46 @@ func _detect_Axis_dif(basis1:Basis, basis2:Basis, AxisXYZ:AXIS = 1)->float:
 	return roll_difference_deg
 	
 
-## This function is still a work in progress. It currently has an issue caused by a Y-axis flip. Once the bone rotates past the 0-degree point on the Y axis, it calculates the roll incorrectly, which basically makes it spin like a drill.
-func clamp_roll(basis1:Basis, basis2:Basis, degree:float)->Basis:
-	#var AlimentRequired:float = basis2.y.normalized().signed_angle_to(basis1.y.normalized(), basis2.x.normalized())
-	#var AlinedBasis2:Basis = basis2.rotated(basis2.z.normalized(),AlimentRequired)
-	var roll_dif :float= _detect_Axis_dif(basis1,basis2)
-	var adjust_required :float = 0.0
-	#print("b1 "+str(basis1))
-	#print("b2 "+str(basis2))
-	#print(degree)
-	if roll_dif > degree:
-		adjust_required = (roll_dif - degree)*-1
-	elif roll_dif < -degree:
-		adjust_required = (roll_dif + degree)*-1
-	if adjust_required != 0.0:
-		#print(adjust_required)
-		#var rotVector = basis2.y.normalized()
-		#var rotAmount = adjust_required
-		#if rotVector.y <0:
-		#	rotAmount = -rotAmount
-		#print(rotVector)
-		basis2 = basis2.rotated(basis2.y.normalized(),deg_to_rad((adjust_required)))
-	return basis2
+## This is the function I am using to clamp the roll. I could not get it to work using only Euler angles and Basis, so I dipped into quaternions, that fourth-dimensional mind flayer. There are still some edge cases where it inverts and twists the wrong way, but with Godot 4.6 adding full IK this may not need further updates and should be suitable for about 90% of cases.
+func limit_relative_y_roll(basis1: Basis, basis2: Basis, limit_radians: float) -> Basis:
+	var axis := Vector3.UP.normalized()  # Y axis
+
+	# Find relative rotation of B from A
+	var relative_basis: Basis = basis1.inverse() * basis2
+	var rel :Quaternion= Quaternion(relative_basis.orthonormalized())
+
+	#Get signed twist angle around Y
+	var v :Vector3= Vector3(rel.x, rel.y, rel.z)
+	var axis_dot_v :float= axis.dot(v)
+	var w :float= rel.w
+
+	var angle := 0.0
+	var sin_half_abs:float= abs(axis_dot_v)
+
+	if sin_half_abs > 0 or abs(w) > 0:
+		# get Unsigned angle from quaternion
+		angle = 2.0 * atan2(sin_half_abs, w)
+		# Give it a sign based on direction along axis
+		if axis_dot_v < 0.0:
+			angle = -angle
+	# If already within limits, return original b
+	if abs(angle) <= limit_radians:
+		return basis2
+
+	# Original twist around Y
+	var twist_orig :Quaternion= Quaternion(axis, angle)
+	# Limited twist around Y
+	var clamped_angle :float= clamp(angle, -limit_radians, limit_radians)
+	var twist_limited :Quaternion= Quaternion(axis, clamped_angle)
+
+	# swing * twist = rel  =>  swing = rel * twist^-1
+	var swing :Quaternion= rel * twist_orig.inverse()
+
+	# New relative rotation with limited twist
+	var rel_limited :Quaternion= swing * twist_limited
+
+	# Convert back to Basis and to world space
+	var new_rel_basis :Basis= Basis(rel_limited)
+	var new_basis_b :Basis= basis1 * new_rel_basis
+
+	return new_basis_b
