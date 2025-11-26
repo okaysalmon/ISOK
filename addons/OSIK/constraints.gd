@@ -18,6 +18,10 @@ class_name OSIK_Constraints
 @export_range(0.00,180,0.01) var yPositiveLimit = 0.0
 @export_range(0.00,180,0.01) var yNegativeLimit = 0.0
 
+@export_category("Roll limit")
+@export var limitRoll:bool
+@export_range(0.00,180,0.01) var maxRollDeg:float =0.0
+
 var NameChangeOpen:bool = true
 
 func _ready():
