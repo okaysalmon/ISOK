@@ -3,7 +3,7 @@
 extends SkeletonModifier3D
 class_name OSIK
 
-##Code Version 1.0.7.0##
+##Code Version 1.0.7.5##
 
 enum AXIS {X,Y,Z}
 
@@ -354,7 +354,8 @@ func _process_modification_with_delta(delta: float) -> void:
 				#Htis is where the roll lock will be applied once i have the code corected to fix y flip corection
 				if bone_idx!=0:
 					#print(str(skeleton.get_bone_pose(bone_idx-1).basis) +" the index is " +str(boneCurrentPoseArray[boneList.size()-bone-1].basis))
-					boneCurrentPoseArray[boneList.size()-bone-1].basis =  limit_relative_y_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,Limits[bone-1].maxRollDeg)     #     clamp_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,Limits[bone-1].maxRollDeg)
+					if Limits[bone-1].limitRoll:
+						boneCurrentPoseArray[boneList.size()-bone-1].basis =  limit_relative_y_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,deg_to_rad(Limits[bone-1].maxRollDeg))     #     clamp_roll(skeleton.get_bone_pose(bone_idx-1).basis,boneCurrentPoseArray[boneList.size()-bone-1].basis,Limits[bone-1].maxRollDeg)
 				
 				if bone != boneList.size()-1 :
 					# Sets the new origin for the next bone based on the current bone’s basis Y direction.
@@ -598,5 +599,5 @@ func limit_relative_y_roll(basis1: Basis, basis2: Basis, limit_radians: float) -
 	# Convert back to Basis and to world space
 	var new_rel_basis :Basis= Basis(rel_limited)
 	var new_basis_b :Basis= basis1 * new_rel_basis
-
+	print("ran all the way through")
 	return new_basis_b
